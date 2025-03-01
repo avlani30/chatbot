@@ -6,6 +6,7 @@ scikit-learn==1.2.2
 sentence-transformers==2.2.2
 faiss-cpu==1.7.4
 Werkzeug==2.2.2
-numpy>=1.24.0
+numpy==1.23.5
+
 
 
