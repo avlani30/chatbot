@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Medical Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f8f9fa;
+    }
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .logo {
+      display: block;
+      margin: 0 auto 20px auto;
+      max-width: 180px;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+    .tag-button {
+      background-color: #ff7900;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      padding: 8px 12px;
+      cursor: pointer;
+    }
+    .tag-button:hover {
+      background-color: #fb8c00;
+    }
+    .input-area {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      font-size: 1rem;
+    }
+    button.ask-btn {
+      background-color: #36afea;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 10px 20px;
+      cursor: pointer;
+    }
+    button.ask-btn:hover {
+      background-color: #45a049;
+    }
+    #answer {
+      white-space: pre-wrap;
+      margin-top: 20px;
+      padding: 10px;
+      background: #f1f1f1;
+      border-radius: 4px;
+      min-height: 50px;
+      text-align: left;
+    }
+    @media (max-width: 600px) {
+      .container {
+        width: 90%;
+        margin: 20px auto;
+        padding: 15px;
+      }
+      .input-area {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      input[type="text"] {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+      button.ask-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Use a local file by placing your logo in the static folder -->
+    <img src="{{ url_for('static', filename='logo.png') }}" alt="Logo" class="logo" />
+    <h1>Medical Chatbot</h1>
+    <div class="tags">
+      <button class="tag-button" onclick="setQuestion('Menopause')">Menopause</button>
+      <button class="tag-button" onclick="setQuestion('Vaginal surgery')">Vaginal surgery</button>
+      <button class="tag-button" onclick="setQuestion('Hormones')">Hormones</button>
+      <button class="tag-button" onclick="setQuestion('High risk pregnancy')">High risk pregnancy</button>
+      <button class="tag-button" onclick="setQuestion('MTP')">MTP</button>
+      <button class="tag-button" onclick="setQuestion('Fetal medicine')">Fetal medicine</button>
+    </div>
+    <div class="input-area">
+      <input type="text" id="userQuestion" placeholder="Ask any question about the topic..." />
+      <button class="ask-btn" onclick="askQuestion()">Ask</button>
+    </div>
+    <div id="answer"></div>
+  </div>
+
+  <script>
+    function setQuestion(topic) {
+      document.getElementById('userQuestion').value = topic;
+    }
+    async function askQuestion() {
+      const question = document.getElementById('userQuestion').value.trim();
+      if (!question) return;
+      const response = await fetch('/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question })
+      });
+      const data = await response.json();
+      document.getElementById('answer').textContent = data.answer;
+    }
+  </script>
+</body>
+</html>
