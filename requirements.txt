@@ -5,3 +5,5 @@ torch==2.0.1
 scikit-learn==1.2.2
 sentence-transformers==2.2.2
 faiss-cpu==1.7.4
+Werkzeug==2.0.3
+
